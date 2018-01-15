@@ -94,9 +94,12 @@
     hasAnyRowConflicts: function() {
       // use call to hasRowConflictAt function
       let boardObj = this.attributes;
-      for (let i = 0; i < boardObj.length; i++) {
-        this.hasRowConflictAt(i);
+      for (let i = 0; i < boardObj.n; i++) {
+        if (this.hasRowConflictAt(i) ) {
+          return true;
+        }
       }
+      return false;
     },
     // COLUMNS - run from top to bottom
     // --------------------------------------------------------------
@@ -105,7 +108,6 @@
     hasColConflictAt: function(colIndex) {
       let boardObj = this.attributes;
       let hold = 0;
-      // console.log(boardObj)
       for (var i = 0; i < boardObj.n; i++) {
         if (boardObj[i][colIndex] === 1) {
           hold += 1;
@@ -116,24 +118,13 @@
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-
-      // use call to hasRowConflictAt function
-
-      // // var test = Board({n:4})
-      // // test.togglePiece(0,0);
-      // // test.togglePiece(1,0);
-      // console.log('test')
-      // for (var i = 0; i < boardObj.n; i++) {
-      //   let hold = 0;
-      //   console.log('getting here')
-      //   for (var j = 0; j < boardObj[i].length; j++) {
-      //     if (boardObj[i][colIndex] === 1) {
-      //       hold += 1;
-      //       console.log('this works')
-      //     }
-      //   }
-      //   return hold > 1;
-      // }
+      let boardObj = this.attributes;
+      for ( let i = 0; i < boardObj.n; i++ ) {
+        if (this.hasColConflictAt(i) ) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
@@ -145,8 +136,8 @@
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
       let board = this.attributes;
       let hold = 0;
-      for (let i = 0; i < board.n; i++) {
-        if( board[i][majorDiagonalColumnIndexAtFirstRow] === 1 ) {
+      for ( let i = 0; i < board.n; i++ ) {
+        if ( board[i][majorDiagonalColumnIndexAtFirstRow] === 1 ) {
           hold++;
         }
         majorDiagonalColumnIndexAtFirstRow++;
@@ -159,7 +150,7 @@
       let board = this.attributes;
       let start = (board.n - 1) * -1;
       for (let i = start; i < board.n; i++) {
-        if (hasMajorDiagonalConflictAt(i)) {
+        if ( this.hasMajorDiagonalConflictAt(i) ) {
           return true;
         }
       }
@@ -175,7 +166,7 @@
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       let board = this.attributes;
       let hold = 0;
-      for (let i = 0; i < board.n; i++) {
+      for ( let i = 0; i < board.n; i++ ) {
         if ( board[i][minorDiagonalColumnIndexAtFirstRow] === 1 ) {
           hold++;
         }
@@ -187,9 +178,9 @@
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
       let board = this.attributes;
-      let start = board.n - 1;
-      for (let i = start; i < board.n; i++) {
-        if (hasAnyMinorDiagonalConflicts(i)) {
+      let start = board.n + board.n - 2;
+      for ( var i = 0; i <= start; i++) {
+        if ( this.hasMinorDiagonalConflictAt(i) ) {
           return true;
         }
       }
