@@ -70,6 +70,9 @@ window.findNQueensSolution = function(n) {
   var solution = new Board( {n: n} );
   var holdArr = [];
   var count = 0;
+
+  var objToTrack = {};
+
   if ( n === 0 ) { return []; }
   var numPieces = function() {
     return _.reduce(solution.rows(), function(memo, row) {
@@ -80,24 +83,45 @@ window.findNQueensSolution = function(n) {
   };
 
 
-  var inner = function(row = 0, col = 0) {
+  var inner = function() {
   // if ( n === 6 ) debugger
+    // debugger
     if ( numPieces() === n ) {
       return;
     }
+
+    var randomNum = getRandomNumber(0, n * n)
+    while ( objToTrack[randomNum] !== undefined ) {
+      randomNum = getRandomNumber(0, n * n)
+    }
+    objToTrack[randomNum] = randomNum;
+
+    var next = numToCoord(randomNum, n)
+    var row = next[0];
+    var col = next[1];
 
     solution.togglePiece(row, col);
     if ( solution.hasAnyRowConflicts() || solution.hasAnyColConflicts() || solution.hasAnyMajorDiagonalConflicts() || solution.hasAnyMinorDiagonalConflicts()) {
       solution.togglePiece(row, col);
     }
-    var next = getNextCoordinates(row, col, n);
-    if ( next.length === 0 ) {
-      count += 1;
-      next[1] = count;
-      next[0] = 0;
-      solution = new Board({n: n});
+
+    if ( numPieces() === n ) {
+      return;
     }
-    inner(next[0], next[1]);
+
+    if ( checkedAllBoard(objToTrack, n) ) {
+      // debugger
+      solution = new Board( {n: n} );
+      objToTrack = {};
+    }
+
+    // if ( next.length === 0 ) {
+    //   count += 1;
+    //   next[1] = count;
+    //   next[0] = 0;
+    //   solution = new Board({n: n});
+    // }
+    inner();
   };
 
   inner();
@@ -107,6 +131,19 @@ window.findNQueensSolution = function(n) {
   holdArr.pop();
   return holdArr;
 };
+
+window.checkedAllBoard = function(obj, n) {
+  var count = 0;
+  for ( var i in obj ) {
+    count ++
+  }
+  return count === n * n;
+}
+
+window.getRandomNumber = function(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
 
 window.getNextCoordinates = function(row, col, n) {
   col++;
