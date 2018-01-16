@@ -121,6 +121,12 @@ window.getNextCoordinates = function(row, col, n) {
   }
   return [row, col];
 };
+
+window.numToCoord = function(num, n) {
+  if ( Math.floor(num / n) === n )return false;
+  return [Math.floor(num / n), (num % n)]
+}
+
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
   var solutionCount = undefined; //fixme
