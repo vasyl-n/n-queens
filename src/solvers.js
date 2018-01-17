@@ -38,10 +38,12 @@ window.findNRooksSolution = function(n, num = 0) {
   var boardCount = 0;
 
   var recurse = function(n, num) {
+    if ( num === 3 ) debugger
     board = new Board({n: n});
     var piecesToToggle = convertToStr(n, num);
     while ( thereAreDuplecates(piecesToToggle) ) {
-      piecesToToggle = convertToStr(n, ++num);
+      piecesToToggle = convertToStr(n, num++);
+      // if (num > n * n ) return{};
     }
     for ( i = 0; i < piecesToToggle.length; i++ ) {
       board.togglePiece(i, piecesToToggle[i]);
@@ -61,8 +63,20 @@ window.findNRooksSolution = function(n, num = 0) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  debugger;
+  if ( n === 1) {return 1};
+  if ( n === 2) {return 2};
+  debugger
+  counter = 0
+  var obj = {};
 
+  for ( var i = 0; i < (n ** n); i++ ) {
+    var board = JSON.stringify(findNRooksSolution(n , i))
+    if ( obj[board] === undefined ) {
+      counter++
+      obj[board] = "bla";
+    }
+  }
+  return counter -1;
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
