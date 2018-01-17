@@ -11,7 +11,6 @@ describe('solvers', function() {
             return memo + col;
           }, 0);
         }, 0);
-
         expect(solutionBoard.get('n')).to.equal(n);
         expect(numPieces).to.equal(n);
         expect(solutionBoard.hasAnyRooksConflicts()).to.be.equal(false);
@@ -41,11 +40,12 @@ describe('solvers', function() {
         var solutionBoard = new Board(findNQueensSolution(n));
         var numPieces = _.reduce(solutionBoard.rows(), function(memo, row) {
           return memo + _.reduce(row, function(memo, col) {
+            // console.log(col)
             return memo + col;
           }, 0);
         }, 0);
-
         expect(solutionBoard.get('n')).to.equal(n);
+        // console.log(numPieces, solutionBoard)
         expect(numPieces).to.equal(n);
         expect(solutionBoard.hasAnyQueensConflicts()).to.be.equal(false);
       });
